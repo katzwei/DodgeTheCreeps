@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://d3mhvtrg7xn5p"]
+
+[ext_resource type="PackedScene" uid="uid://bkl18dunudmcs" path="res://mob.tscn" id="1_d5s7t"]
+[ext_resource type="Script" path="res://mob_with_graze.gd" id="1_sw0qn"]
+[ext_resource type="Shader" path="res://mob.gdshader" id="3_11tr3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ycinv"]
+radius = 112.112
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1rlj5"]
+resource_local_to_scene = true
+shader = ExtResource("3_11tr3")
+shader_parameter/show = false
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/width = 5.0
+
+[node name="MobWithGraze" type="RigidBody2D" groups=["grazing"]]
+collision_layer = 2
+collision_mask = 0
+gravity_scale = 0.0
+script = ExtResource("1_sw0qn")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ycinv")
+
+[node name="Mob" parent="." instance=ExtResource("1_d5s7t")]
+material = SubResource("ShaderMaterial_1rlj5")
+
+[connection signal="mob_destroyed" from="Mob" to="." method="_on_mob_mob_destroyed"]

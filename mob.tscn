@@ -1,0 +1,81 @@
+[gd_scene load_steps=12 format=3 uid="uid://bkl18dunudmcs"]
+
+[ext_resource type="Script" path="res://mob.gd" id="1_1rs0o"]
+[ext_resource type="Texture2D" uid="uid://cp7fgd68nrw31" path="res://art/enemyFlyingAlt_1.png" id="1_7m4ul"]
+[ext_resource type="Shader" path="res://mob.gdshader" id="1_dui3x"]
+[ext_resource type="Texture2D" uid="uid://grl48m71n25f" path="res://art/enemyFlyingAlt_2.png" id="2_yeh12"]
+[ext_resource type="Texture2D" uid="uid://gbkao0sdib1n" path="res://art/enemySwimming_1.png" id="3_4a8en"]
+[ext_resource type="Texture2D" uid="uid://cykvtcnevor5b" path="res://art/enemySwimming_2.png" id="4_1erg1"]
+[ext_resource type="Texture2D" uid="uid://dos10428bj272" path="res://art/enemyWalking_1.png" id="5_1u0cg"]
+[ext_resource type="Texture2D" uid="uid://juig2k3qxkap" path="res://art/enemyWalking_2.png" id="6_p1vfu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_smed6"]
+resource_local_to_scene = true
+shader = ExtResource("1_dui3x")
+shader_parameter/show = false
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/width = 5.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p1k2x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_7m4ul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_yeh12")
+}],
+"loop": true,
+"name": &"fly",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_4a8en")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_1erg1")
+}],
+"loop": true,
+"name": &"swim",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_1u0cg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_p1vfu")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 3.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xyay5"]
+radius = 33.0
+height = 72.0
+
+[node name="Mob" type="CharacterBody2D" groups=["mobs"]]
+material = SubResource("ShaderMaterial_smed6")
+collision_mask = 0
+script = ExtResource("1_1rs0o")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+use_parent_material = true
+scale = Vector2(0.75, 0.75)
+sprite_frames = SubResource("SpriteFrames_p1k2x")
+animation = &"fly"
+frame = 1
+frame_progress = 0.906582
+
+[node name="HitCollision" type="CollisionShape2D" parent="."]
+position = Vector2(5, 0)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_xyay5")
+debug_color = Color(0, 0.6, 0.7, 0.42)
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

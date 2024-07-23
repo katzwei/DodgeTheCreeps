@@ -1,0 +1,156 @@
+[gd_scene load_steps=6 format=3 uid="uid://drkmt1uufexuw"]
+
+[ext_resource type="FontFile" uid="uid://ber1unc127bu8" path="res://fonts/Xolonium-Regular.ttf" id="1_fe5d4"]
+[ext_resource type="Script" path="res://canvas_layer.gd" id="1_q80mm"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_ukpi6"]
+action = &"start_game"
+
+[sub_resource type="Shortcut" id="Shortcut_x8hdi"]
+events = [SubResource("InputEventAction_ukpi6")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ggwvv"]
+bg_color = Color(0.917647, 0.443137, 0.176471, 1)
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_q80mm")
+
+[node name="Message" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -240.0
+offset_right = 240.0
+offset_bottom = 159.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_fe5d4")
+theme_override_font_sizes/font_size = 64
+text = "Dodge the creeps!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Leaderboard" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -150.0
+offset_right = 240.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_fe5d4")
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartButton" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -140.0
+offset_right = 100.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_fe5d4")
+theme_override_font_sizes/font_size = 64
+shortcut = SubResource("Shortcut_x8hdi")
+text = "Start"
+
+[node name="ScoreLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -22.5
+offset_right = 22.5
+offset_bottom = 78.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_fe5d4")
+theme_override_font_sizes/font_size = 64
+text = "0"
+horizontal_alignment = 1
+
+[node name="MessageTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="PowerUI" type="CanvasGroup" parent="."]
+visible = false
+
+[node name="PowerButton" type="Button" parent="PowerUI"]
+z_index = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 640.0
+offset_right = 460.0
+offset_bottom = 680.0
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_group_ = true
+
+[node name="PowerGauge" type="ProgressBar" parent="PowerUI/PowerButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_ggwvv")
+show_percentage = false
+
+[node name="GameOverInput" type="CanvasGroup" parent="."]
+visible = false
+
+[node name="InputField" type="LineEdit" parent="GameOverInput"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 40.0
+offset_top = 341.0
+offset_right = 440.0
+offset_bottom = 379.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_fe5d4")
+theme_override_font_sizes/font_size = 24
+
+[node name="InputRandomize" type="Button" parent="GameOverInput"]
+offset_left = 50.0
+offset_top = 385.0
+offset_right = 230.0
+offset_bottom = 432.0
+theme_override_fonts/font = ExtResource("1_fe5d4")
+theme_override_font_sizes/font_size = 32
+text = "Random
+"
+
+[node name="InputSubmit" type="Button" parent="GameOverInput"]
+offset_left = 250.0
+offset_top = 385.0
+offset_right = 430.0
+offset_bottom = 432.0
+theme_override_fonts/font = ExtResource("1_fe5d4")
+theme_override_font_sizes/font_size = 32
+disabled = true
+text = "Submit"
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]
+[connection signal="pressed" from="PowerUI/PowerButton" to="." method="_on_power_button_pressed"]
+[connection signal="text_changed" from="GameOverInput/InputField" to="." method="_on_input_field_text_changed"]
+[connection signal="pressed" from="GameOverInput/InputRandomize" to="." method="_on_input_randomize_pressed"]
+[connection signal="pressed" from="GameOverInput/InputSubmit" to="." method="_on_input_submit_pressed"]
